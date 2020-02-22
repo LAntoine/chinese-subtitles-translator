@@ -5,5 +5,9 @@
     <RootNamespace>subtitles_translator_api</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+  </ItemGroup>
+
 
 </Project>
