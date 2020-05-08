@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using subtitles_translator_api.Infrastructure;
 using subtitles_translator_api.Model;
+using System.Text.Json.Serialization;
 
 namespace subtitles_translator_api
 {
@@ -21,8 +22,10 @@ namespace subtitles_translator_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddScoped<IChineseSubtitlesTranslator, ChineseSubtitlesTranslator>();
+            services.AddScoped<IMinecraftLanguagePackTranslator, MinecraftLanguagePackTranslator>();
             services.AddScoped<ITranslatorCaller>(sp => new AzureTranslatorCaller(Configuration.GetValue<string>("MicrosoftAzureKey")));
 
             services.AddSwaggerGen(c =>

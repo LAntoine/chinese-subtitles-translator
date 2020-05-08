@@ -10,8 +10,8 @@ namespace subtitles_translator_api.Model
 {
     public interface IChineseSubtitlesTranslator
     {
-        Task<string> TranslateSubtitles(string textToTranslate, bool addPinyin, OutputLanguage outputLanguage);
-        Task<Subtitle> Translate(Subtitle subtitle, bool addPinyin, OutputLanguage outputLanguage);
+        Task<string> TranslateSubtitles(string textToTranslate, bool addPinyin, Language outputLanguage);
+        Task<Subtitle> Translate(Subtitle subtitle, bool addPinyin, Language outputLanguage);
     }
 
     public class ChineseSubtitlesTranslator : IChineseSubtitlesTranslator
@@ -24,7 +24,7 @@ namespace subtitles_translator_api.Model
         }
 
         public async Task<string> TranslateSubtitles(string textToTranslate, bool addPinyin,
-            OutputLanguage outputLanguage)
+            Language outputLanguage)
         {
             var splitedTextToTranslate = textToTranslate.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
             var listSubtitles = new List<Subtitle>();
@@ -55,7 +55,7 @@ namespace subtitles_translator_api.Model
             //    ));
 
             var tasks = listSubtitles.Select(subtitle =>
-                Translate(subtitle, addPinyin:true, OutputLanguage.English)
+                Translate(subtitle, addPinyin:true, Language.English)
             );
 
 
@@ -76,11 +76,11 @@ namespace subtitles_translator_api.Model
             return result;
         }
 
-        public async Task<Subtitle> Translate(Subtitle subtitle, bool addPinyin, OutputLanguage outputLanguage)
+        public async Task<Subtitle> Translate(Subtitle subtitle, bool addPinyin, Language outputLanguage)
         {
             if (addPinyin)
             {
-                var pinyin = await _translatorCaller.Translate(subtitle.Text, OutputLanguage.Pinyin);
+                var pinyin = await _translatorCaller.Translate(subtitle.Text, Language.Pinyin);
                 subtitle.PinyinText = pinyin.ToList();
             }
             var translations = await _translatorCaller.Translate(subtitle.Text, outputLanguage);

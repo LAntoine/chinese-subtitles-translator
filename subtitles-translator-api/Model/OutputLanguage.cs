@@ -1,9 +1,10 @@
 ﻿namespace subtitles_translator_api.Model
 {
-    public enum OutputLanguage
+    public enum Language
     {
         Pinyin,
         English,
-        French
+        French,
+        Mandarin
     }
 }
